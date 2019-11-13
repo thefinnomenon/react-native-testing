@@ -27,7 +27,8 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 const App = () => {
-  const usingHermes = typeof HermesInternal === 'object' && HermesInternal !== null;
+  // eslint-disable-next-line no-undef
+  const Hermes = typeof HermesInternal === 'object' && HermesInternal !== null;
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -36,7 +37,7 @@ const App = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           <Header />
-          {!usingHermes ? null : (
+          {!Hermes ? null : (
             <View style={styles.engine}>
               <Text style={styles.footer}>Engine: Hermes</Text>
             </View>
@@ -45,8 +46,8 @@ const App = () => {
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One</Text>
               <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-                screen and then come back to see your edits.
+                Edit <Text style={styles.highlight}>App.tsx</Text> to change
+                this screen and then come back to see your edits.
               </Text>
             </View>
             <View style={styles.sectionContainer}>
@@ -62,7 +63,9 @@ const App = () => {
               </Text>
             </View>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
+              <Text style={styles.sectionTitle} testID="learnMore">
+                Learn More
+              </Text>
               <Text style={styles.sectionDescription}>
                 Read the docs to discover what to do next:
               </Text>

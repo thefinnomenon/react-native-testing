@@ -6,7 +6,9 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest --coverage",
+    "e2e:build": "detox build",
+    "e2e:test": "detox test",
     "ts-compile-check": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
@@ -24,8 +26,10 @@
     "@typescript-eslint/parser": "^2.7.0",
     "babel-jest": "^24.9.0",
     "cross-env": "^6.0.3",
+    "detox": "^14.7.1",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-detox": "^1.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.0.3",
     "eslint-plugin-jsx-a11y": "^6.2.3",
@@ -54,6 +58,19 @@
       "git add"
     ]
   },
+  "detox": {
+    "configurations": {
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/lintingAndTesting.app",
+        "build": "xcodebuild -workspace ios/lintingAndTesting.xcworkspace -scheme lintingAndTesting -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 11 Pro"
+        }
+      }
+    },
+    "test-runner": "jest"
+  },
   "eslintConfig": {
     "root": true,
     "parser": "@typescript-eslint/parser",
@@ -77,7 +94,8 @@
       "@react-native-community"
     ],
     "plugins": [
-      "react-hooks"
+      "react-hooks",
+      "detox"
     ],
     "rules": {
       "@typescript-eslint/explicit-function-return-type": "off",
@@ -99,11 +117,13 @@
       ],
       "react-native/sort-styles": 0,
       "react-native/no-raw-text": 0,
+      "eslint-comments/no-unlimited-disable": 0,
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn"
     },
     "env": {
       "jest": true,
+      "detox/detox": true,
       "react-native/react-native": true
     },
     "settings": {
@@ -121,6 +141,9 @@
   },
   "jest": {
     "preset": "react-native",
+    "testPathIgnorePatterns": [
+      "<rootDir>/e2e"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
