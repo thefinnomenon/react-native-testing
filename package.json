@@ -7,8 +7,10 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest --coverage",
-    "e2e:build": "detox build",
-    "e2e:test": "detox test",
+    "e2e:ios-debug": "detox build --configuration ios.sim.debug && detox test --configuration ios.sim.debug",
+    "e2e:ios-release": "detox build --configuration ios.sim.release && detox test --configuration ios.sim.release",
+    "e2e:android-debug": "detox build --configuration android.emu.debug && detox test --configuration android.emu.debug -l verbose",
+    "e2e:android-release": "detox build --configuration android.emu.release && detox test --configuration android.emu.release -l verbose",
     "ts-compile-check": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
@@ -66,6 +68,30 @@
         "type": "ios.simulator",
         "device": {
           "type": "iPhone 11 Pro"
+        }
+      },
+      "ios.sim.release": {
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/lintingAndTesting.app",
+        "build": "export RCT_NO_LAUNCH_PACKAGER=true && xcodebuild -workspace ios/lintingAndTesting.xcworkspace -UseNewBuildSystem=NO -scheme lintingAndTesting -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -quiet",
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 11 Pro"
+        }
+      },
+      "android.emu.debug": {
+        "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+        "build": "cd android ; ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug ; cd -",
+        "type": "android.emulator",
+        "device": {
+          "avdName": "Pixel_3_API_27"
+        }
+      },
+      "android.emu.release": {
+        "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
+        "build": "cd android ; ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release ; cd -",
+        "type": "android.emulator",
+        "device": {
+          "avdName": "Pixel_3_API_27"
         }
       }
     },
